@@ -39,7 +39,8 @@ class App extends Component {
           />
         );
       } else {
-        return ui.messages.reverse().map((msg, idx) => (<p key={idx}><span style={{color: msg.user.color}}>{msg.user['display-name']}</span>: {msg.text}</p>));
+        // TODO create a chat-feed
+        return ui.messages.slice().reverse().map((msg, idx) => (<p key={idx}><span style={{color: msg.user.color}}>{msg.user['display-name']}</span>: {msg.text}</p>));
       }
     };
 

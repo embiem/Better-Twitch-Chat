@@ -8,6 +8,7 @@ class Twitch {
         debug: false
       },
       connection: {
+        secure: true,
         reconnect: true,
         maxReconnectAttempts: 10,
         maxReconnectInterval: 20000,
