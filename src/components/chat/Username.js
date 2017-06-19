@@ -40,10 +40,7 @@ export default class Username extends React.Component {
     else if (userstate.mod) bgColor = green500;
 
     return (
-      <div
-        onMouseOver={this.mouseOver}
-        onMouseOut={this.mouseOut}
-      >
+      <div onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>
         <Chip
           backgroundColor={bgColor}
           onTouchTap={() => {
@@ -52,22 +49,22 @@ export default class Username extends React.Component {
             );
           }}
           style={Username.styles.chip}
+        >
+          <Avatar
+            size={32}
+            color={(() => (userstate.color ? userstate.color : grey800))()}
+            backgroundColor={bgColor}
           >
-            <Avatar
-              size={32}
-              color={(() => (userstate.color ? userstate.color : grey800))()}
-              backgroundColor={bgColor}
-              >
-                {userstate.username.substr(0, 2).toUpperCase()}
-              </Avatar>
-              {(() => {
-                if (this.state.hover) {
-                  return userstate['display-name']
-                  ? userstate['display-name']
-                  : userstate.username;
-                }
-              })()}
-            </Chip>
+            {userstate.username.substr(0, 2).toUpperCase()}
+          </Avatar>
+          {(() => {
+            if (this.state.hover) {
+              return userstate['display-name']
+                ? userstate['display-name']
+                : userstate.username;
+            }
+          })()}
+        </Chip>
       </div>
     );
   }

@@ -28,9 +28,15 @@
 }
 
 .Message {
-  height: 38px;
-  line-height: 38px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.emoticon {
+  height: 24px;
+  width: auto;
 }
