@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Menu from './components/menu/Menu';
 import Navigation from './components/menu/Navigation';
 import ConnectForm from './components/forms/Connect';
+import Username from './components/chat/Username';
 
 import { uiActions } from './redux/actions';
 
@@ -18,20 +19,35 @@ class App extends Component {
   render() {
     const { dispatch, ui } = this.props;
 
+    const renderChatMessages = () => {
+      return ui.messages
+        .map((msg, idx) =>
+          <div className="Chat-Message" key={idx}>
+            <Username channel={msg.channel.substr(1)} userstate={msg.user} />
+            <div className="Message">
+              {msg.text}
+            </div>
+          </div>
+        );
+    };
+
     const renderContent = () => {
       if (!ui.connectedTo || ui.connectedTo.length <= 0) {
         return (
           <ConnectForm
             onConnectClicked={() => {
-              this.client = window.Twitch
-                .join(ui.channelName)
-                .then(channelName => {
+              this.client = window.Twitch.join(ui.channelName).then(
+                channelName => {
                   dispatch(uiActions.setConnectedTo(channelName));
-                  console.warn(`Is connected to ${channelName}! TODO set state here`);
-                }, err => {
+                  console.warn(
+                    `Is connected to ${channelName}! TODO set state here`
+                  );
+                },
+                err => {
                   dispatch(uiActions.setConnectedTo(''));
                   console.error(`Could not connect to channel!`, err);
-                });
+                }
+              );
             }}
             onChannelNameChanged={(event, newValue) => {
               dispatch(uiActions.setChannelName(newValue));
@@ -40,7 +56,11 @@ class App extends Component {
         );
       } else {
         // TODO create a chat-feed
-        return ui.messages.slice().reverse().map((msg, idx) => (<p key={idx}><span style={{color: msg.user.color}}>{msg.user['display-name']}</span>: {msg.text}</p>));
+        return (
+          <div className="Chat">
+            {renderChatMessages()}
+          </div>
+        );
       }
     };
 
