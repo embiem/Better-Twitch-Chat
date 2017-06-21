@@ -29,17 +29,21 @@ store.subscribe(() => {
 
 // Init Twitch
 window.Twitch = new Twitch();
-window.Twitch.client.on('message', (channel, userstate, message, self) => {
-  store.dispatch(
-    uiActions.addMessage({ user: userstate, text: message, channel })
-  );
-});
-window.Twitch.client.on('join', (channel, username, self) => {
-  if (self) store.dispatch(uiActions.setConnectedTo(channel));
-});
-window.Twitch.client.on('part', (channel, username, self) => {
-  if (self) store.dispatch(uiActions.setConnectedTo(''));
-});
+
+const assignTwitchCallbacks = () => {
+  window.Twitch.client.on('message', (channel, userstate, message, self) => {
+    store.dispatch(
+      uiActions.addMessage({ user: userstate, text: message, channel })
+    );
+  });
+  window.Twitch.client.on('join', (channel, username, self) => {
+    if (self) store.dispatch(uiActions.setConnectedTo(channel));
+  });
+  window.Twitch.client.on('part', (channel, username, self) => {
+    if (self) store.dispatch(uiActions.setConnectedTo(''));
+  });
+};
+assignTwitchCallbacks();
 
 // get Twitch access token if we were redirected back after login
 const idxAccessToken = window.location.hash.indexOf('#access_token=');
@@ -60,6 +64,7 @@ if (idxAccessToken >= 0) {
         store.dispatch(userActions.setTwitchToken(body.token));
         if (body.token.valid) {
           window.Twitch.login(body.token.user_name, accessToken);
+          assignTwitchCallbacks();
         }
       } else {
         console.error(err);
