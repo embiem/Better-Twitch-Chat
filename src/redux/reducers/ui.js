@@ -1,5 +1,6 @@
 const initialState = {
   channelName: '',
+  sayMessage: '',
   messages: [],
   connectedTo: ''
 };
@@ -10,6 +11,12 @@ export default function uiReducer(state = initialState, action) {
       return {
         ...state,
         channelName: action.channelName
+      };
+
+    case 'SET_SAY_MESSAGE':
+      return {
+        ...state,
+        sayMessage: action.message
       };
 
     case 'SET_CONNECTED_TO':

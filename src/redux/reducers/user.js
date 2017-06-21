@@ -1,6 +1,7 @@
 const initialState = {
   signedIn: false,
-  userData: undefined
+  userData: undefined,
+  twitchToken: ''
 };
 
 export default function userReducer(state = initialState, action) {
@@ -16,6 +17,12 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         signedIn: false
+      };
+
+    case 'SET_TWITCH_TOKEN':
+      return {
+        ...state,
+        twitchToken: action.token
       };
 
     default:

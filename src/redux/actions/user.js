@@ -9,6 +9,11 @@ export const signOut = () => ({
   type: 'SIGN_OUT'
 });
 
+export const setTwitchToken = (token) => ({
+  type: 'SET_TWITCH_TOKEN',
+  token
+});
+
 export const startSignIn = () => (dispatch, getState) => {
   var provider = new firebase.auth.GoogleAuthProvider();
 

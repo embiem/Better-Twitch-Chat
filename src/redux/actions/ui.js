@@ -3,6 +3,11 @@ export const setChannelName = channelName => ({
   channelName
 });
 
+export const setSayMessage = message => ({
+  type: 'SET_SAY_MESSAGE',
+  message
+});
+
 export const setConnectedTo = channelName => ({
   type: 'SET_CONNECTED_TO',
   channelName

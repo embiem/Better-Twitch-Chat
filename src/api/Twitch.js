@@ -1,22 +1,25 @@
 import tmi from 'tmi.js';
 
+import { twitchConfig } from '../config';
+
 class Twitch {
+  options = {
+    options: {
+      clientId: twitchConfig.clientId,
+      debug: false
+    },
+    connection: {
+      secure: true,
+      reconnect: true,
+      maxReconnectAttempts: 10,
+      maxReconnectInterval: 20000,
+      reconnectInterval: 1000
+    },
+    channels: []
+  };
+
   constructor(debug) {
-    const options = {
-      options: {
-        clientId: null,
-        debug: false
-      },
-      connection: {
-        secure: true,
-        reconnect: true,
-        maxReconnectAttempts: 10,
-        maxReconnectInterval: 20000,
-        reconnectInterval: 1000
-      },
-      channels: []
-    };
-    this.client = tmi.client(options);
+    this.client = tmi.client(this.options);
     if (debug) {
       this.client.on('message', (channel, userstate, message, self) => {
         console.log(
@@ -109,19 +112,32 @@ class Twitch {
       if (this.client.readyState() === 'OPEN') {
         this.client
           .join(channelName)
-          .then((data) => {
+          .then(data => {
             console.log(`Connected to ${data}`);
             resolve(data);
           })
-          .catch((err) => {
+          .catch(err => {
             console.error(err);
             reject(err);
           });
       } else {
-        console.error(`Can't connect to ${channelName}, as the client is in state '${this.client.readyState()}'`);
+        console.error(
+          `Can't connect to ${channelName}, as the client is in state '${this.client.readyState()}'`
+        );
         reject(this.client.readyState());
       }
     });
+  }
+
+  login(userName, token) {
+    this.client = tmi.client({
+      ...this.options,
+      identity: {
+        username: userName,
+        password: token
+      }
+    });
+    this.client.connect();
   }
 }
 

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import config from './config';
+import config, { twitchConfig } from './config';
 
 import Twitch from './api/Twitch';
 import { userActions, uiActions } from './redux/actions';
@@ -27,6 +27,47 @@ store.subscribe(() => {
   console.log('New State', state);
 });
 
+// Init Twitch
+window.Twitch = new Twitch();
+window.Twitch.client.on('message', (channel, userstate, message, self) => {
+  store.dispatch(
+    uiActions.addMessage({ user: userstate, text: message, channel })
+  );
+});
+window.Twitch.client.on('join', (channel, username, self) => {
+  if (self) store.dispatch(uiActions.setConnectedTo(channel));
+});
+window.Twitch.client.on('part', (channel, username, self) => {
+  if (self) store.dispatch(uiActions.setConnectedTo(''));
+});
+
+// get Twitch access token if we were redirected back after login
+const idxAccessToken = window.location.hash.indexOf('#access_token=');
+if (idxAccessToken >= 0) {
+  const idxScope = window.location.hash.indexOf('&scope=');
+  const accessToken = window.location.hash.substring(
+    '#access_token='.length,
+    idxScope > idxAccessToken ? idxScope : null
+  );
+  const scope = window.location.hash.substring(idxScope + '&scope='.length);
+
+  window.Twitch.client.api(
+    {
+      url: `https://api.twitch.tv/kraken?client_id=${twitchConfig.clientId}&oauth_token=${accessToken}`
+    },
+    function(err, res, body) {
+      if (!err) {
+        store.dispatch(userActions.setTwitchToken(body.token));
+        if (body.token.valid) {
+          window.Twitch.login(body.token.user_name, accessToken);
+        }
+      } else {
+        console.error(err);
+      }
+    }
+  );
+}
+
 // Init firebase
 firebase.initializeApp(config);
 const auth = firebase.auth();
@@ -40,19 +81,7 @@ auth.onAuthStateChanged(user => {
   }
 });
 
-// Init Twitch
-window.Twitch = new Twitch();
-window.Twitch.client.on('message', (channel, userstate, message, self) => {
-  store.dispatch(uiActions.addMessage({user: userstate, text: message, channel}));
-});
-window.Twitch.client.on('join', (channel, username, self) => {
-  if (self)
-    store.dispatch(uiActions.setConnectedTo(channel));
-});
-window.Twitch.client.on('part', (channel, username, self) => {
-  if (self)
-    store.dispatch(uiActions.setConnectedTo(''));
-});
+// Render
 ReactDOM.render(
   <MuiThemeProvider>
     <Provider store={store}>
