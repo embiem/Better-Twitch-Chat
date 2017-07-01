@@ -1,0 +1,35 @@
+.Chat {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.Chat-Message {
+  display: flex;
+  justify-content: flex-start;
+  align-content:center;
+  flex-direction: row;
+  vertical-align: middle;
+}
+
+.Username {
+  /*display: inline-block;
+  width: 100px;
+  overflow: hidden;
+  text-align: right;
+  vertical-align: middle;*/
+}
+
+.Message {
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emoticon {
+  height: 24px;
+  width: auto;
+}
