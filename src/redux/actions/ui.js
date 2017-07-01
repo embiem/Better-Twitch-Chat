@@ -8,6 +8,11 @@ export const addMessage = messageObj => ({
   messageObj
 });
 
+export const removeMessage = index => ({
+  type: 'REMOVE_MESSAGE',
+  index
+});
+
 export const showSnackbar = message => ({
   type: 'SHOW_SNACKBAR',
   message

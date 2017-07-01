@@ -25,6 +25,15 @@ export default function uiReducer(state = initialState, action) {
       };
     }
 
+    case 'REMOVE_MESSAGE':
+      return {
+        ...state,
+        messages: [
+          ...state.messages.slice(0, action.index),
+          ...state.messages.slice(action.index + 1)
+        ]
+      };
+
     case 'SHOW_SNACKBAR':
       return {
         ...state,
