@@ -1,28 +1,18 @@
 const initialState = {
-  channelName: '',
   sayMessage: '',
   messages: [],
-  connectedTo: ''
+  snackbar: {
+    open: false,
+    message: ''
+  }
 };
 
 export default function uiReducer(state = initialState, action) {
   switch (action.type) {
-    case 'SET_CHANNEL_NAME':
-      return {
-        ...state,
-        channelName: action.channelName
-      };
-
     case 'SET_SAY_MESSAGE':
       return {
         ...state,
         sayMessage: action.message
-      };
-
-    case 'SET_CONNECTED_TO':
-      return {
-        ...state,
-        connectedTo: action.channelName
       };
 
     case 'ADD_MESSAGE':
@@ -34,6 +24,15 @@ export default function uiReducer(state = initialState, action) {
         messages: newMessages
       };
     }
+
+    case 'SHOW_SNACKBAR':
+      return {
+        ...state,
+        snackbar: {
+          open: true,
+          message: action.message
+        }
+      };
 
     default:
       return state;

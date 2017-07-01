@@ -4,14 +4,16 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import firebase from 'firebase';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import config, { twitchConfig } from './config';
+import Popup from './components/popup/Popup';
+import config from './config';
 
-import { userActions } from './redux/actions';
+import { userActions, uiActions } from './redux/actions';
 
 import './index.css';
+import 'font-awesome/css/font-awesome.css';
 
 // Needed for onTouchTap in material-ui components
 // http://stackoverflow.com/a/34015469/988941
@@ -30,18 +32,25 @@ firebase.auth().onAuthStateChanged(user => {
       .database()
       .ref(`twitchUserData/${user.uid}/`)
       .once('value')
-      .then(snapshot => store.dispatch(userActions.setTwitchUser(snapshot.val())))
+      .then(snapshot =>
+        store.dispatch(userActions.setTwitchUser(snapshot.val()))
+      );
+
+    store.dispatch(uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`));
   }
 });
-
 // Render
 ReactDOM.render(
   <MuiThemeProvider>
     <Provider store={store}>
-      <App />
+      <Router>
+        <div>
+          {window.location.pathname.indexOf('popup') >= 0
+            ? <Route path="/popup" component={Popup} />
+            : <Route path="/" component={App} />}
+        </div>
+      </Router>
     </Provider>
   </MuiThemeProvider>,
   document.getElementById('root')
 );
-
-//registerServiceWorker();

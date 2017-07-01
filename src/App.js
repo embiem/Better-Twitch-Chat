@@ -1,60 +1,95 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import Snackbar from 'material-ui/Snackbar';
 
 import Menu from './components/menu/Menu';
 import Navigation from './components/menu/Navigation';
-import ConnectForm from './components/forms/Connect';
 import Chat from './components/chat/Chat';
-import Popup from './components/popup/Popup';
-
-import { uiActions } from './redux/actions';
+import Home from './components/home/Home';
 
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { drawerOpen: false, channelToJoin: '', joinChannel: false};
+    this.state = { drawerOpen: false };
+
+    this._renderMenu = this._renderMenu.bind(this);
+    this._renderNav = this._renderNav.bind(this);
+    this._renderSnackbar = this._renderSnackbar.bind(this);
+  }
+
+  _renderMenu() {
+    return (
+      <Menu
+        title="Menu"
+        entries={[{ id: 1, name: '#WTF' }, { id: 2, name: '#FML' }]}
+        open={this.state.drawerOpen}
+        onCloseClicked={() => this.setState({ drawerOpen: false })}
+        onEntryClicked={id => {
+          console.warn('TODO menu entry clicked with id ', id);
+          this.setState({ drawerOpen: false });
+        }}
+      />
+    );
+  }
+
+  _renderNav() {
+    const { user } = this.props;
+    const isLoggedIn =
+      user.firebaseUser && !user.firebaseUser.isAnonymous && user.twitchUser;
+
+    return (
+      <Navigation
+        title="Better Twitch Chat"
+        onLeftIconClicked={() =>
+          this.setState({ drawerOpen: !this.state.drawerOpen })}
+        onRightIconClicked={() => {
+          if (!isLoggedIn)
+            window.open(
+              `${window.location.origin}/popup`,
+              'name',
+              'height=585,width=400'
+            );
+        }}
+        userData={
+          isLoggedIn
+            ? {
+                name: user.twitchUser.display_name
+                  ? user.twitchUser.display_name
+                  : user.firebaseUser.displayName,
+                image: user.twitchUser.logo
+                  ? user.twitchUser.logo
+                  : user.firebaseUser.photoURL
+              }
+            : null
+        }
+      />
+    );
+  }
+
+  _renderSnackbar() {
+    const { ui } = this.props;
+    return (
+      <Snackbar
+        open={ui.snackbar.open}
+        message={ui.snackbar.message}
+        autoHideDuration={4000}
+      />
+    );
   }
 
   render() {
     return (
-      <Router>
-        <div className="App">
-          <Navigation
-            title="Better Twitch Chat"
-            onLeftIconClicked={() =>
-              this.setState({ drawerOpen: !this.state.drawerOpen })}
-          />
-          <Menu
-            title="Menu"
-            entries={[{ id: 1, name: '#WTF' }, { id: 2, name: '#FML' }]}
-            open={this.state.drawerOpen}
-            onCloseClicked={() => this.setState({ drawerOpen: false })}
-            onEntryClicked={id => {
-              console.warn('TODO menu entry clicked with id ', id);
-              this.setState({ drawerOpen: false });
-            }}
-          />
-          <Route exact path="/" render={() => {
-            if (!this.state.joinChannel) {
-              return (
-                <ConnectForm
-                  onChannelNameChanged={(event, newVal) => this.setState({...this.state, channelToJoin: newVal})}
-                  onConnectClicked={() => this.setState({...this.state, joinChannel: true})}
-                />
-              )
-            } else {
-              return (
-                <Redirect to={`/chat/${this.state.channelToJoin}`}/>
-              );
-            }
-          }} />
-          <Route path="/chat/:channel" component={Chat} />
-          <Route path="/popup" component={Popup} />
-        </div>
-      </Router>
+      <div className="App">
+        {this._renderNav()}
+        {this._renderMenu()}
+        {this._renderSnackbar()}
+
+        <Route exact path="/" component={Home} />
+        <Route path="/chat/:channel" component={Chat} />
+      </div>
     );
   }
 }

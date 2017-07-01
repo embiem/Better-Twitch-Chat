@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 
+import FoldingCube from '../loading/FoldingCube';
+
 import firebase from 'firebase';
 
 class Popup extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { displayMessage: 'Please wait...' };
+  }
   /**
      * Returns the value of the given URL query parameter.
      */
   getURLParameter(name) {
     return (
       decodeURIComponent(
-        (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(
+        (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(// eslint-disable-line
           window.location.search
         ) || [null, ''])[1]
           .replace(/\+/g, '%20')
@@ -33,11 +39,16 @@ class Popup extends Component {
     if (error) {
       document.body.innerText =
         'Error back from the Twitch auth page: ' + error;
+
+      this.setState({
+        displayMessage: `Error while trying to log-in your Twitch account: ${error}`
+      });
     } else if (!code) {
       // Start the auth flow.
       window.location.href = `https://us-central1-${this.getFirebaseProjectId()}.cloudfunctions.net/redirect${isDebugMode
         ? `?debug=1`
         : ``}`;
+      this.setState({ displayMessage: `Connecting to Twitch...` });
     } else {
       /**
        * This callback is called by the JSONP callback of the 'token' Firebase Function with the Firebase auth token.
@@ -51,6 +62,10 @@ class Popup extends Component {
           console.error(data);
           document.body.innerText =
             'Error in the token Function: ' + data.error;
+
+          this.setState({
+            displayMessage: `Error while finalizing your log-in: ${data.error}`
+          });
         }
       };
       // Use JSONP to load the 'token' Firebase Function to exchange the auth code against a Firebase custom token.
@@ -69,13 +84,17 @@ class Popup extends Component {
       )}&callback=window.tokenReceived${isDebugMode ? `&debug=1` : ``}`;
 
       document.head.appendChild(script);
+      this.setState({ displayMessage: `Finalizing Log-in...` });
     }
   }
 
   render() {
     return (
       <div>
-        Please wait...
+        <FoldingCube />
+        <div style={{ textAlign: 'center' }}>
+          {this.state.displayMessage}
+        </div>
       </div>
     );
   }

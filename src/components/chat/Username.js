@@ -33,11 +33,11 @@ export default class Username extends React.Component {
   }
 
   render() {
-    const { userstate, channel } = this.props;
+    const { user, channel } = this.props;
 
     let bgColor = grey200;
-    if (userstate.username === channel) bgColor = red900;
-    else if (userstate.mod) bgColor = green500;
+    if (user.username === channel) bgColor = red900;
+    else if (user.mod) bgColor = green500;
 
     return (
       <div onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>
@@ -45,23 +45,23 @@ export default class Username extends React.Component {
           backgroundColor={bgColor}
           onTouchTap={() => {
             console.log(
-              `TODO: Chat-Message username ${userstate.username} was clicked!`
+              `TODO: Chat-Message username ${user.username} was clicked!`
             );
           }}
           style={Username.styles.chip}
         >
           <Avatar
             size={32}
-            color={(() => (userstate.color ? userstate.color : grey800))()}
+            color={(() => (user.color ? user.color : grey800))()}
             backgroundColor={bgColor}
           >
-            {userstate.username.substr(0, 2).toUpperCase()}
+            {user.username.substr(0, 2).toUpperCase()}
           </Avatar>
           {(() => {
             if (this.state.hover) {
-              return userstate['display-name']
-                ? userstate['display-name']
-                : userstate.username;
+              return user['display-name']
+                ? user['display-name']
+                : user.username;
             }
           })()}
         </Chip>

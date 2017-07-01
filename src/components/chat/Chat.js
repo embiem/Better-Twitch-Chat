@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Twitch from '../../api/Twitch';
 
-import Username from './Username';
+import Message from './Message';
 
 import { uiActions } from '../../redux/actions';
 
@@ -28,14 +28,17 @@ class Chat extends Component {
   }
 
   render() {
+    const { ui } = this.props;
     return (
       <div className="Chat">
-        {`We're at ${this.props.match.params.channel}, right?`}
+        {ui.messages.map((msg, idx) =>
+          <Message message={msg.text} user={msg.user} key={idx}/>
+        )}
       </div>
     );
   }
 }
 
 export default connect(state => ({
-  overlays: state.overlays
+  ui: state.ui
 }))(Chat);
