@@ -8,6 +8,8 @@ import Navigation from './components/menu/Navigation';
 import Chat from './components/chat/Chat';
 import Home from './components/home/Home';
 
+import { uiActions } from './redux/actions/'
+
 import './App.css';
 
 class App extends Component {
@@ -70,12 +72,13 @@ class App extends Component {
   }
 
   _renderSnackbar() {
-    const { ui } = this.props;
+    const { ui, dispatch } = this.props;
     return (
       <Snackbar
         open={ui.snackbar.open}
         message={ui.snackbar.message}
         autoHideDuration={4000}
+        onRequestClose={() => dispatch(uiActions.hideSnackbar())}
       />
     );
   }

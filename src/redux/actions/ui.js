@@ -12,3 +12,7 @@ export const showSnackbar = message => ({
   type: 'SHOW_SNACKBAR',
   message
 });
+
+export const hideSnackbar = () => ({
+  type: 'HIDE_SNACKBAR'
+});

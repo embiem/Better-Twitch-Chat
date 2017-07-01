@@ -34,6 +34,15 @@ export default function uiReducer(state = initialState, action) {
         }
       };
 
+    case 'HIDE_SNACKBAR':
+      return {
+        ...state,
+        snackbar: {
+          open: false,
+          message: ''
+        }
+      };
+
     default:
       return state;
   }
