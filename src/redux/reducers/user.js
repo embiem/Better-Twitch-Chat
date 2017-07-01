@@ -1,28 +1,27 @@
 const initialState = {
-  signedIn: false,
-  userData: undefined,
+  firebaseUser: null,
+  twitchUser: null,
   twitchToken: ''
 };
 
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
-    case 'SIGN_IN':
+    case 'SET_FIREBASE_USER':
       return {
         ...state,
-        userData: action.user,
-        signedIn: true
+        firebaseUser: action.user
       };
 
-    case 'SIGN_OUT':
+    case 'SET_TWITCH_USER':
       return {
         ...state,
-        signedIn: false
+        twitchUser: action.user
       };
 
     case 'SET_TWITCH_TOKEN':
       return {
         ...state,
-        twitchToken: action.token
+        twitchToken: action.accessToken
       };
 
     default:

@@ -1,33 +1,19 @@
 import firebase from 'firebase';
 
-export const signIn = user => ({
-  type: 'SIGN_IN',
+export const setFirebaseUser = user => ({
+  type: 'SET_FIREBASE_USER',
   user
 });
 
-export const signOut = () => ({
-  type: 'SIGN_OUT'
+export const setTwitchUser = user => ({
+  type: 'SET_TWITCH_USER',
+  user
 });
 
-export const setTwitchToken = (token) => ({
+export const setTwitchToken = accessToken => ({
   type: 'SET_TWITCH_TOKEN',
-  token
+  accessToken
 });
-
-export const startSignIn = () => (dispatch, getState) => {
-  var provider = new firebase.auth.GoogleAuthProvider();
-
-  firebase
-    .auth()
-    .signInWithPopup(provider)
-    .then(function(result) {
-      console.log('result', result);
-      dispatch(signIn(result.user));
-    })
-    .catch(function(err) {
-      console.error(`Could not sign in. Code ${err.code}: ${err.message}`);
-    });
-};
 
 export const startSignOut = () => (dispatch, getState) => {
   firebase

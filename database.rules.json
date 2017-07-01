@@ -1,6 +1,24 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "messages": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid"
+      }
+    },
+
+    "twitchAccessToken": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid"
+      }
+    },
+
+    "twitchUserData": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid"
+      }
+    }
   }
 }
