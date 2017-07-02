@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Snackbar from 'material-ui/Snackbar';
 import Media from 'react-media';
 
@@ -95,8 +95,12 @@ class App extends Component {
         {this._renderMenu()}
         {this._renderSnackbar()}
 
-        <Route exact path="/" component={Home} />
-        <Route path="/chat/:channel" component={Chat} />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/chat/:channel" component={Chat} />
+          {/*If nothing fits, go back to Home */}
+          <Route render={() => <Redirect to="/" />} />
+        </Switch>
       </div>
     );
   }
