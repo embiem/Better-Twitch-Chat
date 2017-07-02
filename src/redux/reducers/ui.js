@@ -1,5 +1,5 @@
 const initialState = {
-  sayMessage: '',
+  messageInput: '',
   messages: [],
   snackbar: {
     open: false,
@@ -9,10 +9,10 @@ const initialState = {
 
 export default function uiReducer(state = initialState, action) {
   switch (action.type) {
-    case 'SET_SAY_MESSAGE':
+    case 'SET_MESSAGE_INPUT':
       return {
         ...state,
-        sayMessage: action.message
+        messageInput: action.message
       };
 
     case 'ADD_MESSAGE':

@@ -2,6 +2,8 @@ import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import Username from './Username';
 
+import './Message.css';
+
 class Message extends React.Component {
   constructor(props) {
     super(props);

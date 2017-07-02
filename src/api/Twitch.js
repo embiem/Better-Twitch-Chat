@@ -18,8 +18,9 @@ class Twitch {
     channels: []
   };
 
-  constructor(channelName) {
+  constructor(channelName, identity) {
     if (channelName) this.options.channels.push(channelName);
+    if (identity) this.options.identity = identity;
 
     this.client = tmi.client(this.options);
     this.client.connect();

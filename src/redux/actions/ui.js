@@ -1,5 +1,5 @@
-export const setSayMessage = message => ({
-  type: 'SET_SAY_MESSAGE',
+export const setMessageInput = message => ({
+  type: 'SET_MESSAGE_INPUT',
   message
 });
 

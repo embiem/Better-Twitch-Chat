@@ -36,6 +36,14 @@ firebase.auth().onAuthStateChanged(user => {
         store.dispatch(userActions.setTwitchUser(snapshot.val()))
       );
 
+    firebase
+      .database()
+      .ref(`twitchAccessToken/${user.uid}/`)
+      .once('value')
+      .then(snapshot =>
+        store.dispatch(userActions.setTwitchToken(snapshot.val()))
+      );
+
     store.dispatch(uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`));
   }
 });

@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import Snackbar from 'material-ui/Snackbar';
+import Media from 'react-media';
 
 import Menu from './components/menu/Menu';
 import Navigation from './components/menu/Navigation';
 import Chat from './components/chat/Chat';
 import Home from './components/home/Home';
 
-import { uiActions } from './redux/actions/'
+import { uiActions } from './redux/actions/';
 
 import './App.css';
 
@@ -42,9 +43,9 @@ class App extends Component {
     const isLoggedIn =
       user.firebaseUser && !user.firebaseUser.isAnonymous && user.twitchUser;
 
-    return (
+    const nav = titleText =>
       <Navigation
-        title="Better Twitch Chat"
+        title={titleText}
         onLeftIconClicked={() =>
           this.setState({ drawerOpen: !this.state.drawerOpen })}
         onRightIconClicked={() => {
@@ -67,7 +68,11 @@ class App extends Component {
               }
             : null
         }
-      />
+      />;
+    return (
+      <Media query="(max-width: 500px)">
+        {matches => (matches ? nav('BTC') : nav('Better Twitch Chat'))}
+      </Media>
     );
   }
 
