@@ -15,7 +15,6 @@ class Message extends React.Component {
     const emotes = this.props.user.emotes;
     let msgArray = this.props.message.split("");
     const parsedMsg = [];
-    debugger;
     for (let emoteIndex in emotes) {
       const emote = emotes[emoteIndex];
 
@@ -46,6 +45,9 @@ class Message extends React.Component {
         parsedMsg[i] = coherentString;
         coherentString = '';
       }
+    }
+    if (coherentString) {
+      parsedMsg[msgArray.length] = coherentString;
     }
 
     return parsedMsg.map((entry, idx) => {
