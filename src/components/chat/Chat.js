@@ -20,6 +20,7 @@ class Chat extends Component {
     super(props);
     this.twitch = null;
     this.messagesRef = null;
+    this.numMsgsShowing = 10;
 
     this.state = {
       open: false
@@ -158,22 +159,24 @@ class Chat extends Component {
           transitionEnterTimeout={400}
           transitionLeaveTimeout={300}
         >
-          {ui.messages.map((msg, idx) =>
-            <Message
-              key={idx}
-              message={msg.text}
-              user={msg.user}
-              onLikeMsg={msg => {
-                if (this.messagesRef)
-                  this.messagesRef.push({ message: msg, liked: true });
-              }}
-              onDislikeMsg={msg => {
-                if (this.messagesRef)
-                  this.messagesRef.push({ message: msg, liked: false });
-                dispatch(uiActions.removeMessage(idx));
-              }}
-            />
-          )}
+          {ui.messages
+            .map((msg, idx) =>
+              <Message
+                key={msg.user['tmi-sent-ts'] + msg.user['user-id']}
+                message={msg.text}
+                user={msg.user}
+                channel={msg.channel}
+                onLikeMsg={msg => {
+                  if (this.messagesRef)
+                    this.messagesRef.push({ message: msg, liked: true });
+                }}
+                onDislikeMsg={msg => {
+                  if (this.messagesRef)
+                    this.messagesRef.push({ message: msg, liked: false });
+                  dispatch(uiActions.removeMessage(idx));
+                }}
+              />
+            )}
         </ReactCSSTransitionGroup>
         {this._renderMessageInterface()}
       </div>

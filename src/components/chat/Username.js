@@ -36,7 +36,7 @@ export default class Username extends React.Component {
     const { user, channel } = this.props;
 
     let bgColor = grey200;
-    if (user.username === channel) bgColor = red900;
+    if (user.username === channel || user.username === channel.substr(1)) bgColor = red900;
     else if (user.mod) bgColor = green500;
 
     return (
