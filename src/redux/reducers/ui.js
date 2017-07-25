@@ -4,7 +4,8 @@ const initialState = {
   snackbar: {
     open: false,
     message: ''
-  }
+  },
+  maxMessageCount: 20
 };
 
 export default function uiReducer(state = initialState, action) {
@@ -19,6 +20,9 @@ export default function uiReducer(state = initialState, action) {
     {
       const newMessages = [...state.messages];
       newMessages.push(action.messageObj);
+      if (newMessages.length > state.maxMessageCount) {
+        newMessages.shift();
+      }
       return {
         ...state,
         messages: newMessages

@@ -11,7 +11,7 @@ import Popover from 'material-ui/Popover';
 import Twitch from '../../api/Twitch';
 import Message from './Message';
 import MessagesContainer from './MessagesContainer';
-import { uiActions } from '../../redux/actions';
+import { uiActions, chatActions } from '../../redux/actions';
 
 import './Chat.css';
 
@@ -35,9 +35,8 @@ class Chat extends Component {
     }
     this.twitch = new Twitch(this.props.match.params.channel, identity);
     this.twitch.client.on('message', (channel, userstate, message, self) => {
-      // TODO parse the message to extract emotes and apply ML model's prediction
       dispatch(
-        uiActions.addMessage({ user: userstate, text: message, channel })
+        chatActions.handleMessageReceived(channel, userstate, message)
       );
     });
   }

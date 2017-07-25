@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "animate.css": "^3.5.2",
+    "brain": "^0.7.0",
     "firebase": "^4.1.2",
     "font-awesome": "^4.7.0",
     "material-ui": "^0.18.3",
+    "mimir": "^0.0.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
