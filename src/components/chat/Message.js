@@ -8,7 +8,7 @@ class Message extends React.Component {
   constructor(props) {
     super(props);
     this._renderMessage = this._renderMessage.bind(this);
-    this.state = { liked: false };
+    this.state = { voted: false };
   }
 
   _renderMessage() {
@@ -65,9 +65,9 @@ class Message extends React.Component {
       <div className="Chat-Message">
         <Username channel={this.props.channel} user={this.props.user} />
         <div className="Message">{this._renderMessage()}</div>
-        {this.state.liked
+        {this.state.voted
           ? <div className="Annotation">
-              {`Thanks for liking!`}
+              {`Thanks for voting!`}
             </div>
           : <div className="Vote">
               <IconButton
@@ -75,7 +75,7 @@ class Message extends React.Component {
                 iconClassName="fa fa-thumbs-o-up"
                 onTouchTap={() => {
                   this.props.onLikeMsg(this.props.message);
-                  this.setState({ liked: true });
+                  this.setState({ voted: true });
                 }}
               />
               <IconButton
@@ -83,6 +83,7 @@ class Message extends React.Component {
                 iconClassName="fa fa-thumbs-o-down"
                 onTouchTap={() => {
                   this.props.onDislikeMsg(this.props.message);
+                  this.setState({ voted: true });
                 }}
               />
             </div>}

@@ -10,7 +10,7 @@ import App from './App';
 import Popup from './components/popup/Popup';
 import config from './config';
 
-import { userActions, uiActions } from './redux/actions';
+import { userActions, uiActions, chatActions } from './redux/actions';
 
 import './index.css';
 import 'font-awesome/css/font-awesome.css';
@@ -42,6 +42,14 @@ firebase.auth().onAuthStateChanged(user => {
       .once('value')
       .then(snapshot =>
         store.dispatch(userActions.setTwitchToken(snapshot.val()))
+      );
+
+    firebase
+      .database()
+      .ref(`messages/${user.uid}/`)
+      .once('value')
+      .then(snapshot =>
+        store.dispatch(chatActions.handleTrainMessagesReceived(snapshot.val()))
       );
 
     store.dispatch(uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`));

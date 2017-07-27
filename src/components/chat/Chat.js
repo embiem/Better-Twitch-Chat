@@ -33,7 +33,11 @@ class Chat extends Component {
     if (this.twitch) {
       this.twitch.client.disconnect();
     }
-    this.twitch = new Twitch(this.props.match.params.channel, identity);
+
+    const channel = this.props.match.params.channel;
+    dispatch(uiActions.setCurrentChannel(channel));
+
+    this.twitch = new Twitch(channel, identity);
     this.twitch.client.on('message', (channel, userstate, message, self) => {
       dispatch(
         chatActions.handleMessageReceived(channel, userstate, message)

@@ -7,6 +7,7 @@ import Media from 'react-media';
 import Menu from './components/menu/Menu';
 import Navigation from './components/menu/Navigation';
 import Chat from './components/chat/Chat';
+import Train from './components/train/Train';
 import Home from './components/home/Home';
 
 import { uiActions } from './redux/actions/';
@@ -16,23 +17,41 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { drawerOpen: false };
+    this.state = { drawerOpen: false, chosenMenuItem: 0 };
 
     this._renderMenu = this._renderMenu.bind(this);
     this._renderNav = this._renderNav.bind(this);
     this._renderSnackbar = this._renderSnackbar.bind(this);
   }
 
+  componentDidUpdate() {
+    if (this.state.chosenMenuItem !== 0) {
+      this.setState({ chosenMenuItem: 0 });
+    }
+  }
+
   _renderMenu() {
+    const { ui } = this.props;
+
+    if (this.state.chosenMenuItem === 1) {
+      return <Redirect to={`/`} />;
+    } else if (this.state.chosenMenuItem === 2) {
+      return <Redirect to={`/train/`} />;
+    } else if (this.state.chosenMenuItem === 3) {
+      return <Redirect to={`/chat/${ui.currentChannel}`} />
+    }
+    const entries = [{ id: 1, name: 'Home' }, { id: 2, name: 'Train' }];
+    if (ui.currentChannel) {
+      entries.push({ id: 3, name: `Chat: '${ui.currentChannel}'`});
+    }
     return (
       <Menu
         title="Menu"
-        entries={[{ id: 1, name: '#WTF' }, { id: 2, name: '#FML' }]}
+        entries={entries}
         open={this.state.drawerOpen}
         onCloseClicked={() => this.setState({ drawerOpen: false })}
         onEntryClicked={id => {
-          console.warn('TODO menu entry clicked with id ', id);
-          this.setState({ drawerOpen: false });
+          this.setState({ chosenMenuItem: id, drawerOpen: false });
         }}
       />
     );
@@ -98,6 +117,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/chat/:channel" component={Chat} />
+          <Route path="/train" component={Train} />
           {/*If nothing fits, go back to Home */}
           <Route render={() => <Redirect to="/" />} />
         </Switch>

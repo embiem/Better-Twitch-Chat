@@ -1,6 +1,8 @@
 const initialState = {
   messageInput: '',
   messages: [],
+  hiddenMessages: [],
+  currentChannel: '',
   snackbar: {
     open: false,
     message: ''
@@ -29,6 +31,17 @@ export default function uiReducer(state = initialState, action) {
       };
     }
 
+    case 'ADD_HIDDEN_MESSAGE':
+    {
+      return {
+        ...state,
+        hiddenMessages: [
+          ...state.hiddenMessages,
+          action.messageObj
+        ]
+      };
+    }
+
     case 'REMOVE_MESSAGE':
       return {
         ...state,
@@ -36,6 +49,12 @@ export default function uiReducer(state = initialState, action) {
           ...state.messages.slice(0, action.index),
           ...state.messages.slice(action.index + 1)
         ]
+      };
+
+    case 'SET_CURRENT_CHANNEL':
+      return {
+        ...state,
+        currentChannel: action.channel
       };
 
     case 'SHOW_SNACKBAR':
