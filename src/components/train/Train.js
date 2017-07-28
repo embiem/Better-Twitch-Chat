@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import TextField from 'material-ui/TextField';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import IconMessage from 'material-ui/svg-icons/communication/message';
-import Popover from 'material-ui/Popover';
 
-import Twitch from '../../api/Twitch';
 import Message from '../chat/Message';
-import MessagesContainer from '../chat/MessagesContainer';
-import { uiActions, chatActions } from '../../redux/actions';
+import { uiActions } from '../../redux/actions';
 
 class Train extends Component {
   constructor(props) {
@@ -19,7 +11,11 @@ class Train extends Component {
     this.messagesRef = null;
   }
 
-  componentDidUpdate() {
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  componentDidMount() {
     const { user } = this.props;
     if (!this.messagesRef && user.firebaseUser) {
       this.messagesRef = firebase

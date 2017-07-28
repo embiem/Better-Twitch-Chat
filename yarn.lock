@@ -1047,6 +1047,10 @@ braces@^1.8.2:
     preserve "^0.2.0"
     repeat-element "^1.1.2"
 
+brain.js@^1.0.0-rc.3:
+  version "1.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/brain.js/-/brain.js-1.0.0-rc.3.tgz#cc2070cc2ae1ba3bb15d3a4d859a3dc71d456f88"
+
 brain@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/brain/-/brain-0.7.0.tgz#a6d0718c064a9d50d9bff39f38557b6b94d4466c"

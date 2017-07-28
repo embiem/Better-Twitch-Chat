@@ -9,11 +9,14 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import App from './App';
 import Popup from './components/popup/Popup';
 import config from './config';
+import Twitch from './api/Twitch';
 
 import { userActions, uiActions, chatActions } from './redux/actions';
 
 import './index.css';
 import 'font-awesome/css/font-awesome.css';
+
+const brain = require('brain.js/browser');
 
 // Needed for onTouchTap in material-ui components
 // http://stackoverflow.com/a/34015469/988941
@@ -55,6 +58,15 @@ firebase.auth().onAuthStateChanged(user => {
     store.dispatch(uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`));
   }
 });
+
+console.log(Twitch);
+Twitch.setMsgCallback(function(channel, userstate, message) {
+  store.dispatch(
+    chatActions.handleMessageReceived(channel, userstate, message)
+  );
+});
+
+
 // Render
 ReactDOM.render(
   <MuiThemeProvider>

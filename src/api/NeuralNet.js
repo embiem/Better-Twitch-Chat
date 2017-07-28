@@ -1,5 +1,4 @@
 const mimir = require('mimir');
-const brain = require('brain');
 
 class NeuralNet {
   constructor() {
@@ -31,7 +30,7 @@ class NeuralNet {
     });
 
     // train our NN
-    this.net = new brain.NeuralNetwork({
+    this.net = new window.brain.NeuralNetwork({
       hiddenLayers: [3, 8, 4]
     });
     const ann_train = traindata.map(pair => ({

@@ -18,7 +18,6 @@ import './Chat.css';
 class Chat extends Component {
   constructor(props) {
     super(props);
-    this.twitch = null;
     this.messagesRef = null;
     this.numMsgsShowing = 10;
 
@@ -30,19 +29,11 @@ class Chat extends Component {
   _connectToTwitch(identity) {
     const { dispatch } = this.props;
 
-    if (this.twitch) {
-      this.twitch.client.disconnect();
-    }
-
     const channel = this.props.match.params.channel;
     dispatch(uiActions.setCurrentChannel(channel));
 
-    this.twitch = new Twitch(channel, identity);
-    this.twitch.client.on('message', (channel, userstate, message, self) => {
-      dispatch(
-        chatActions.handleMessageReceived(channel, userstate, message)
-      );
-    });
+    if (identity) Twitch.login(identity);
+    Twitch.join(channel);
   }
 
   componentDidMount() {
@@ -57,9 +48,10 @@ class Chat extends Component {
         .ref(`messages/${user.firebaseUser.uid}/`);
     }
     if (
-      (!this.twitch || !this.twitch.client.getOptions().identity.password) &&
+      (!Twitch || !Twitch.client.getOptions().identity.password) &&
       user.twitchToken &&
-      user.twitchUser
+      user.twitchUser &&
+      Twitch.client.readyState() === 'OPEN'
     ) {
       this._connectToTwitch({
         username: user.twitchUser.name,
@@ -90,7 +82,7 @@ class Chat extends Component {
     const { dispatch, ui } = this.props;
     if (ui.messageInput) {
       dispatch(uiActions.setMessageInput(''));
-      this.twitch.client.say(
+      Twitch.client.say(
         `${this.props.match.params.channel}`,
         ui.messageInput
       );
