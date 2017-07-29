@@ -42,6 +42,12 @@ export default function uiReducer(state = initialState, action) {
       };
     }
 
+    case 'CLEAR_HIDDEN_MESSAGES':
+    return {
+      ...state,
+      hiddenMessages: []
+    };
+
     case 'REMOVE_MESSAGE':
       return {
         ...state,

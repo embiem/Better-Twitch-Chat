@@ -1,5 +1,4 @@
 .App {
-
 }
 
 .Content {
@@ -25,4 +24,32 @@
   .container {
     width: 100%;
   }
+}
+
+.pagination {
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.pagination li {
+  text-align: center;
+  cursor: pointer;
+  flex: 1;
+  display: inline-block;
+}
+
+.pagination li.active {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.pagination li.previous {
+}
+.pagination li.next {
+}
+
+.pagination li a {
+  width: 100%;
+  display: inline-block;
 }

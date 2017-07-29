@@ -1,3 +1,25 @@
+export const setVotedMessages = messages => ({
+  type: 'SET_VOTED_MESSAGES',
+  messages
+});
+
+export const setVotedMessage = (key, val) => ({
+  type: 'SET_VOTED_MESSAGE',
+  key,
+  val
+});
+
+export const updateVotedMessageLike = (key, liked) => ({
+  type: 'UPDATE_VOTED_MESSAGE_LIKE',
+  key,
+  liked
+});
+
+export const removeVotedMessage = key => ({
+  type: 'REMOVE_VOTED_MESSAGE',
+  key
+});
+
 export const setMessageInput = message => ({
   type: 'SET_MESSAGE_INPUT',
   message
@@ -11,6 +33,10 @@ export const addMessage = messageObj => ({
 export const addHiddenMessage = messageObj => ({
   type: 'ADD_HIDDEN_MESSAGE',
   messageObj
+});
+
+export const clearHiddenMessages = () => ({
+  type: 'CLEAR_HIDDEN_MESSAGES'
 });
 
 export const removeMessage = index => ({

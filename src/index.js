@@ -24,6 +24,13 @@ injectTapEventPlugin();
 // redux setup
 const store = require('./redux/configureStore').configure();
 
+// Twitch callback
+Twitch.setMsgCallback(function(channel, userstate, message) {
+  store.dispatch(
+    chatActions.handleMessageReceived(channel, userstate, message)
+  );
+});
+
 // Init firebase
 firebase.initializeApp(config);
 firebase.auth().onAuthStateChanged(user => {
@@ -59,16 +66,18 @@ firebase.auth().onAuthStateChanged(user => {
         } else {
           store.dispatch(uiActions.showSnackbar(`No NN loaded. Vote on messages and train your model!`));
         }
-      })
+      });
+
+      firebase
+        .database()
+        .ref(`messages/${user.uid}/`)
+        .once('value')
+        .then(snapshot =>
+          store.dispatch(uiActions.setVotedMessages(snapshot.val()))
+        );
 
     store.dispatch(uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`));
   }
-});
-
-Twitch.setMsgCallback(function(channel, userstate, message) {
-  store.dispatch(
-    chatActions.handleMessageReceived(channel, userstate, message)
-  );
 });
 
 

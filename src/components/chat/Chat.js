@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import {Card, CardTitle, CardText, CardActions} from 'material-ui/Card';
+import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -148,8 +148,8 @@ class Chat extends Component {
     const { ui, dispatch } = this.props;
 
     return (
-      <div className='container-center'>
-        <Card className='container'>
+      <div className="container-center">
+        <Card className="container">
           <CardTitle
             title={`Chat: ${ui.currentChannel}`}
             subtitle="Vote up or down to further train your model"
@@ -181,12 +181,33 @@ class Chat extends Component {
                     onLikeMsg={msg => {
                       dispatch(uiActions.votedOnMessage(idx));
                       if (this.messagesRef)
-                        this.messagesRef.push({ message: msg, liked: true });
+                        this.messagesRef
+                          .push({ message: msg, liked: true })
+                          .once('value')
+                          .then(snapshot =>
+                            dispatch(
+                              uiActions.setVotedMessage(
+                                snapshot.key,
+                                snapshot.val()
+                              )
+                            )
+                          );
                     }}
                     onDislikeMsg={msg => {
+                      // TODO add to votedMessages accordingly
                       dispatch(uiActions.votedOnMessage(idx));
                       if (this.messagesRef)
-                        this.messagesRef.push({ message: msg, liked: false });
+                        this.messagesRef
+                          .push({ message: msg, liked: false })
+                          .once('value')
+                          .then(snapshot =>
+                            dispatch(
+                              uiActions.setVotedMessage(
+                                snapshot.key,
+                                snapshot.val()
+                              )
+                            )
+                          );
                     }}
                   />
                 )}

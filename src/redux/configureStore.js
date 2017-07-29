@@ -2,13 +2,14 @@ import * as redux from 'redux';
 import thunk from 'redux-thunk';
 
 // import reducers
-import { userReducer, uiReducer } from './reducers';
+import { userReducer, uiReducer, votedMessagesReducer } from './reducers';
 
 export const configure = (initialState = {}) => {
   // combine all reducers into a single one
   const reducer = redux.combineReducers({
     user: userReducer,
-    ui: uiReducer
+    ui: uiReducer,
+    votedMessages: votedMessagesReducer
   });
 
   // use the combined reducer to create the store
