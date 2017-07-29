@@ -155,20 +155,21 @@ class Chat extends Component {
           transitionLeaveTimeout={300}
         >
           {ui.messages
-            .map((msg, idx) =>
+            .map((msg, idx) => msg.voted ? '' :
               <Message
                 key={msg.user['tmi-sent-ts'] + msg.user['user-id']}
                 message={msg.text}
                 user={msg.user}
                 channel={msg.channel}
                 onLikeMsg={msg => {
+                  dispatch(uiActions.votedOnMessage(idx));
                   if (this.messagesRef)
                     this.messagesRef.push({ message: msg, liked: true });
                 }}
                 onDislikeMsg={msg => {
+                  dispatch(uiActions.votedOnMessage(idx));
                   if (this.messagesRef)
                     this.messagesRef.push({ message: msg, liked: false });
-                  dispatch(uiActions.removeMessage(idx));
                 }}
               />
             )}

@@ -1,9 +1,33 @@
 const mimir = require('mimir');
+const brain = require('brain.js/browser');
 
 class NeuralNet {
   constructor() {
-    this.net = null;
+    this.net = new window.brain.NeuralNetwork({
+      hiddenLayers: [3, 8, 4]
+    });
     this.dict = null;
+
+    this.train = this.train.bind(this);
+    this.predict = this.predict.bind(this);
+    this.saveToJSON = this.saveToJSON.bind(this);
+    this.loadFromJSON = this.loadFromJSON.bind(this);
+    this.isTrained = this.isTrained.bind(this);
+  }
+
+  isTrained() {
+    return this.net && this.dict;
+  }
+
+  saveToJSON() {
+    const netJSON = JSON.stringify(this.net.toJSON());
+    const dictJSON = JSON.stringify(this.dict);
+    return {netJSON, dictJSON};
+  }
+
+  loadFromJSON({netJSON, dictJSON}) {
+    this.net.fromJSON(JSON.parse(netJSON));
+    this.dict = JSON.parse(dictJSON);
   }
 
   train(messagesShow, messagesHide) {
@@ -19,6 +43,7 @@ class NeuralNet {
 
     // create a dict containing all text instances
     this.dict = mimir.dict([...messagesShow, ...messagesHide]);
+    console.log(`training started with ${messagesShow.length + messagesHide.length} datapoints`);
 
     // create the traindata, which has classifications associated (Hide / Show)
     const traindata = [];
@@ -30,14 +55,11 @@ class NeuralNet {
     });
 
     // train our NN
-    this.net = new window.brain.NeuralNetwork({
-      hiddenLayers: [3, 8, 4]
-    });
     const ann_train = traindata.map(pair => ({
       input: pair[0],
       output: vec_result(pair[1], 2)
     }));
-    this.net.train(ann_train);
+    return this.net.train(ann_train);
   }
 
   predict(message) {
@@ -50,14 +72,15 @@ class NeuralNet {
       return 0;
     }
 
-    if (this.net && typeof this.net.run === 'function') {
-      const test_bow_message = mimir.bow(message, this.dict);
-      const prediction = this.net.run(test_bow_message);
-      //console.log(message, prediction);
-      return maxarg(prediction);
-    } else {
+    if (!this.net || !this.dict || typeof this.net.run !== 'function') {
+      console.error('Cant predict because: net | dict', this.net, this.dict);
       return 0;
     }
+
+    const test_bow_message = mimir.bow(message, this.dict);
+    const prediction = this.net.run(test_bow_message);
+    //console.log(message, prediction);
+    return maxarg(prediction);
   }
 };
 

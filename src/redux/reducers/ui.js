@@ -51,6 +51,26 @@ export default function uiReducer(state = initialState, action) {
         ]
       };
 
+    case 'VOTED_ON_MESSAGE':
+    {
+      const messages = [...state.messages];
+      messages[action.index].voted = true;
+      return {
+        ...state,
+        messages
+      };
+    }
+
+    case 'VOTED_ON_HIDDEN_MESSAGE':
+    {
+      const hiddenMessages = [...state.hiddenMessages];
+      hiddenMessages[action.index].voted = true;
+      return {
+        ...state,
+        hiddenMessages
+      };
+    }
+
     case 'SET_CURRENT_CHANNEL':
       return {
         ...state,

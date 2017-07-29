@@ -18,6 +18,16 @@ export const removeMessage = index => ({
   index
 });
 
+export const votedOnMessage = index => ({
+  type: 'VOTED_ON_MESSAGE',
+  index
+});
+
+export const votedOnHiddenMessage = index => ({
+  type: 'VOTED_ON_HIDDEN_MESSAGE',
+  index
+});
+
 export const setCurrentChannel = channel => ({
   type: 'SET_CURRENT_CHANNEL',
   channel

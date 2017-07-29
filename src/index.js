@@ -10,13 +10,12 @@ import App from './App';
 import Popup from './components/popup/Popup';
 import config from './config';
 import Twitch from './api/Twitch';
+import NeuralNet from './api/NeuralNet';
 
 import { userActions, uiActions, chatActions } from './redux/actions';
 
 import './index.css';
 import 'font-awesome/css/font-awesome.css';
-
-const brain = require('brain.js/browser');
 
 // Needed for onTouchTap in material-ui components
 // http://stackoverflow.com/a/34015469/988941
@@ -49,17 +48,22 @@ firebase.auth().onAuthStateChanged(user => {
 
     firebase
       .database()
-      .ref(`messages/${user.uid}/`)
+      .ref(`nets/${user.uid}/`)
       .once('value')
-      .then(snapshot =>
-        store.dispatch(chatActions.handleTrainMessagesReceived(snapshot.val()))
-      );
+      .then(snapshot => {
+        const val = snapshot.val();
+        if (val) {
+          NeuralNet.loadFromJSON({ netJSON: val.netJSON, dictJSON: val.dictJSON });
+          console.log('Loaded NN with trainResult: ', val.trainResult);
+        } else {
+          store.dispatch(uiActions.showSnackbar(`No NN loaded. Vote on messages and train your model!`));
+        }
+      })
 
     store.dispatch(uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`));
   }
 });
 
-console.log(Twitch);
 Twitch.setMsgCallback(function(channel, userstate, message) {
   store.dispatch(
     chatActions.handleMessageReceived(channel, userstate, message)
