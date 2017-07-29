@@ -14,8 +14,8 @@ class Home extends Component {
   render() {
     if (!this.state.joinChannel) {
       return (
-        <div>
-          <Card>
+        <div className="container-center">
+          <Card className="container">
             <CardTitle title="Welcome!" subtitle="About this WebApp" />
             <CardText>
               This WebApp uses Machine Learning to filter messages in Twitch-Chat.
@@ -31,7 +31,7 @@ class Home extends Component {
               train your model.
             </CardText>
           </Card>
-          <ConnectForm
+          <ConnectForm  
             onChannelNameChanged={(event, newVal) =>
               this.setState({ ...this.state, channelToJoin: newVal })}
             onConnectClicked={() =>

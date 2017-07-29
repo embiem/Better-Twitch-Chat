@@ -7,7 +7,7 @@ const initialState = {
     open: false,
     message: ''
   },
-  maxMessageCount: 20
+  maxMessageCount: 22
 };
 
 export default function uiReducer(state = initialState, action) {

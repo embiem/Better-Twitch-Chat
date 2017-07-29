@@ -4,6 +4,10 @@
   align-content:center;
   flex-direction: row;
   vertical-align: middle;
+  transition: all 0.2s;
+}
+.Chat-Message:hover {
+  background-color: rgb(238, 238, 238);
 }
 
 .Message {
@@ -14,6 +18,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.Message:hover {
+  height: 40px;
+  line-height: 20px;
+  white-space: normal;
+  overflow: auto;
+  text-overflow: inherit;
 }
 
 .Annotation {

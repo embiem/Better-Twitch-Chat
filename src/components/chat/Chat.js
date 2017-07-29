@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import {Card, CardTitle, CardText, CardActions} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -146,40 +148,53 @@ class Chat extends Component {
     const { ui, dispatch } = this.props;
 
     return (
-      <div className="Chat">
-        {NeuralNet.isTrained()
-          ? ''
-          : <Link to="/train"><RaisedButton
-              label="Train Neural Network"
-              fullWidth={true}
-              secondary={true}
-              onTouchTap={this.onRetrainModelClick}
-            /></Link>}
-        <ReactCSSTransitionGroup
-          component={MessagesContainer}
-          transitionName="example"
-          transitionEnterTimeout={400}
-          transitionLeaveTimeout={300}
-        >
-          {ui.messages.map((msg, idx) =>
-            <Message
-              key={msg.user['tmi-sent-ts'] + msg.user['user-id']}
-              message={msg.text}
-              user={msg.user}
-              channel={msg.channel}
-              onLikeMsg={msg => {
-                dispatch(uiActions.votedOnMessage(idx));
-                if (this.messagesRef)
-                  this.messagesRef.push({ message: msg, liked: true });
-              }}
-              onDislikeMsg={msg => {
-                dispatch(uiActions.votedOnMessage(idx));
-                if (this.messagesRef)
-                  this.messagesRef.push({ message: msg, liked: false });
-              }}
-            />
-          )}
-        </ReactCSSTransitionGroup>
+      <div className='container-center'>
+        <Card className='container'>
+          <CardTitle
+            title={`Chat: ${ui.currentChannel}`}
+            subtitle="Vote up or down to further train your model"
+          />
+          <CardText>
+            <div className="Chat">
+              {NeuralNet.isTrained()
+                ? ''
+                : <Link to="/train">
+                    <RaisedButton
+                      label="Train Neural Network"
+                      fullWidth={true}
+                      secondary={true}
+                      onTouchTap={this.onRetrainModelClick}
+                    />
+                  </Link>}
+              <ReactCSSTransitionGroup
+                component={MessagesContainer}
+                transitionName="example"
+                transitionEnterTimeout={400}
+                transitionLeaveTimeout={300}
+              >
+                {ui.messages.map((msg, idx) =>
+                  <Message
+                    key={msg.user['tmi-sent-ts'] + msg.user['user-id']}
+                    message={msg.text}
+                    user={msg.user}
+                    channel={msg.channel}
+                    onLikeMsg={msg => {
+                      dispatch(uiActions.votedOnMessage(idx));
+                      if (this.messagesRef)
+                        this.messagesRef.push({ message: msg, liked: true });
+                    }}
+                    onDislikeMsg={msg => {
+                      dispatch(uiActions.votedOnMessage(idx));
+                      if (this.messagesRef)
+                        this.messagesRef.push({ message: msg, liked: false });
+                    }}
+                  />
+                )}
+              </ReactCSSTransitionGroup>
+              {this._renderMessageInterface()}
+            </div>
+          </CardText>
+        </Card>
         {this._renderMessageInterface()}
       </div>
     );

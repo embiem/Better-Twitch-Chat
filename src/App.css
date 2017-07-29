@@ -5,3 +5,24 @@
 .Content {
   margin: 1.5rem;
 }
+
+.container-center {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.container {
+  margin: 8px;
+}
+
+@media (min-width: 800px) {
+  .container {
+    width: 800px;
+  }
+}
+@media (max-width: 799px) {
+  .container {
+    width: 100%;
+  }
+}

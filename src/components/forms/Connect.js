@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import { Card, CardActions, CardTitle, CardText } from 'material-ui/Card';
 
 const Connect = props =>
-  <Card>
+  <Card className="container">
     <CardTitle title="Connect to a Twitch-Channel" />
     <CardText>
       <TextField

@@ -55,8 +55,8 @@ class Train extends Component {
     const { ui, user, dispatch } = this.props;
 
     return (
-      <div className="Train">
-        <Card>
+      <div className="container-center">
+        <Card className="container">
           <CardTitle title="Train" subtitle="Neural Network Status" />
           <CardText>
             {NeuralNet.isTrained()
@@ -73,7 +73,7 @@ class Train extends Component {
           </CardActions>
         </Card>
 
-        <Card>
+        <Card className="container">
           <CardTitle title="Hidden Messages" subtitle="Vote up or down to further train your model" />
           <CardActions>
             <RaisedButton
