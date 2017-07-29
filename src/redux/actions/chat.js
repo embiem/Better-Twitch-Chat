@@ -14,10 +14,10 @@ export const handleTrainMessagesReceived = messagesObj => (
 
   for (let key in messagesObj) {
     const msgObj = messagesObj[key];
-    if (msgObj.liked && messagesShow.length < 200) {
+    if (msgObj.liked && messagesShow.length < 300) {
       // for now we just limit the amount to prevent long NN-training
       messagesShow.push(msgObj.message);
-    } else if (!msgObj.liked && messagesHide.length < 200) {
+    } else if (!msgObj.liked && messagesHide.length < 300) {
       // for now we just limit the amount to prevent long NN-trainin
       messagesHide.push(msgObj.message);
     }

@@ -65,7 +65,7 @@ class Message extends React.Component {
       <div className="Chat-Message">
         <Username channel={this.props.channel} user={this.props.user} />
         <div className="Message">{this._renderMessage()}</div>
-        {this.state.voted
+        {this.state.voted || this.props.message.voted
           ? <div className="Annotation">
               {`Thanks for voting!`}
             </div>

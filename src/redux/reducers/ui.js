@@ -74,6 +74,7 @@ export default function uiReducer(state = initialState, action) {
     case 'SET_CURRENT_CHANNEL':
       return {
         ...state,
+        messages: state.currentChannel !== action.channel ? [] : [...state.messages],
         currentChannel: action.channel
       };
 

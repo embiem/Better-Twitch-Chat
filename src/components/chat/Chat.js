@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import TextField from 'material-ui/TextField';
@@ -9,6 +10,7 @@ import IconMessage from 'material-ui/svg-icons/communication/message';
 import Popover from 'material-ui/Popover';
 
 import Twitch from '../../api/Twitch';
+import NeuralNet from '../../api/NeuralNet';
 import Message from './Message';
 import MessagesContainer from './MessagesContainer';
 import { uiActions, chatActions } from '../../redux/actions';
@@ -82,10 +84,7 @@ class Chat extends Component {
     const { dispatch, ui } = this.props;
     if (ui.messageInput) {
       dispatch(uiActions.setMessageInput(''));
-      Twitch.client.say(
-        `${this.props.match.params.channel}`,
-        ui.messageInput
-      );
+      Twitch.client.say(`${this.props.match.params.channel}`, ui.messageInput);
     }
   };
 
@@ -148,31 +147,38 @@ class Chat extends Component {
 
     return (
       <div className="Chat">
+        {NeuralNet.isTrained()
+          ? ''
+          : <Link to="/train"><RaisedButton
+              label="Train Neural Network"
+              fullWidth={true}
+              secondary={true}
+              onTouchTap={this.onRetrainModelClick}
+            /></Link>}
         <ReactCSSTransitionGroup
           component={MessagesContainer}
           transitionName="example"
           transitionEnterTimeout={400}
           transitionLeaveTimeout={300}
         >
-          {ui.messages
-            .map((msg, idx) => msg.voted ? '' :
-              <Message
-                key={msg.user['tmi-sent-ts'] + msg.user['user-id']}
-                message={msg.text}
-                user={msg.user}
-                channel={msg.channel}
-                onLikeMsg={msg => {
-                  dispatch(uiActions.votedOnMessage(idx));
-                  if (this.messagesRef)
-                    this.messagesRef.push({ message: msg, liked: true });
-                }}
-                onDislikeMsg={msg => {
-                  dispatch(uiActions.votedOnMessage(idx));
-                  if (this.messagesRef)
-                    this.messagesRef.push({ message: msg, liked: false });
-                }}
-              />
-            )}
+          {ui.messages.map((msg, idx) =>
+            <Message
+              key={msg.user['tmi-sent-ts'] + msg.user['user-id']}
+              message={msg.text}
+              user={msg.user}
+              channel={msg.channel}
+              onLikeMsg={msg => {
+                dispatch(uiActions.votedOnMessage(idx));
+                if (this.messagesRef)
+                  this.messagesRef.push({ message: msg, liked: true });
+              }}
+              onDislikeMsg={msg => {
+                dispatch(uiActions.votedOnMessage(idx));
+                if (this.messagesRef)
+                  this.messagesRef.push({ message: msg, liked: false });
+              }}
+            />
+          )}
         </ReactCSSTransitionGroup>
         {this._renderMessageInterface()}
       </div>

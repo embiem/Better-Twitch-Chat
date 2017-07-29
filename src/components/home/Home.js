@@ -16,7 +16,7 @@ class Home extends Component {
       return (
         <div>
           <Card>
-            <CardTitle title="Intro" subtitle="About this WebApp" />
+            <CardTitle title="Welcome!" subtitle="About this WebApp" />
             <CardText>
               This WebApp uses Machine Learning to filter messages in Twitch-Chat.
               You can vote messages up/down & train your{' '}

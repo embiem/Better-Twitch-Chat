@@ -55,6 +55,7 @@ firebase.auth().onAuthStateChanged(user => {
         if (val) {
           NeuralNet.loadFromJSON({ netJSON: val.netJSON, dictJSON: val.dictJSON });
           console.log('Loaded NN with trainResult: ', val.trainResult);
+          store.dispatch(uiActions.showSnackbar(`Neural Net successfully loaded!`));
         } else {
           store.dispatch(uiActions.showSnackbar(`No NN loaded. Vote on messages and train your model!`));
         }

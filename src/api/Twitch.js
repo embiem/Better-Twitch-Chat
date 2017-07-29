@@ -87,7 +87,11 @@ class Twitch {
   }
 
   receiveMessage(channel, userstate, message) {
-    this.onMsg(channel, userstate, message);
+    if (typeof this.onMsg === 'function') {
+      this.onMsg(channel, userstate, message);
+    } else {
+      console.warn('No onMsg callback given!');
+    }
   }
 
   setMsgCallback(callback) {
