@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import _ from 'lodash';
 
 import { uiActions } from './';
 import NeuralNet from '../../api/NeuralNet';
@@ -9,19 +10,23 @@ export const handleTrainMessagesReceived = messagesObj => (
 ) => {
   const { user } = getState();
 
-  const messagesShow = [];
-  const messagesHide = [];
+  let messagesShow = [];
+  let messagesHide = [];
 
   for (let key in messagesObj) {
     const msgObj = messagesObj[key];
-    if (msgObj.liked && messagesShow.length < 300) {
+    if (msgObj.liked) {
       // for now we just limit the amount to prevent long NN-training
       messagesShow.push(msgObj.message);
-    } else if (!msgObj.liked && messagesHide.length < 300) {
+    } else {
       // for now we just limit the amount to prevent long NN-trainin
       messagesHide.push(msgObj.message);
     }
   }
+
+  messagesShow = _.shuffle(messagesShow).slice(0, 500);
+  messagesHide = _.shuffle(messagesHide).slice(0, 500);
+
   const trainResult = NeuralNet.train(messagesShow, messagesHide);
   console.log('training finished: ', trainResult);
   dispatch(

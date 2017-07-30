@@ -118,6 +118,7 @@ class Chat extends Component {
           style={{ width: '300px', height: '200px', padding: '1rem' }}
         >
           <TextField
+            autoFocus={true}
             className="Message-Input"
             disabled={!isLoggedIn}
             hintText="Kappa"
@@ -178,6 +179,7 @@ class Chat extends Component {
                     message={msg.text}
                     user={msg.user}
                     channel={msg.channel}
+                    voted={msg.voted}
                     onLikeMsg={msg => {
                       dispatch(uiActions.votedOnMessage(idx));
                       if (this.messagesRef)
