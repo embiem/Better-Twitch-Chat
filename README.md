@@ -1,7 +1,19 @@
 A hobby project, which tries to implement a more comfortable & feature-rich chat app for Twitch.
+PoC developed during the Capstone project of Udacity's Machine Learning Nanodegree.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 Its guide can be found [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+
+## 3rd party libraries
+
+* brain.js - for classifying messages as "show" or "hide" using Neural Networks
+* firebase - to persist data and authenticate the user via Twitch
+* material-ui - easy & fast UI/UX
+* mimir - bag-of-words model
+* react - front-end framework <3
+* redux - state <3
+* redux-thunk - for those awesome actions that actually aren't actions
+* tmi.js - Twitch api & chat connection
 
 ## New Clone
 
@@ -29,20 +41,20 @@ We are always open to [your feedback](https://github.com/mBeierl/Better-Twitch-C
 TODO some info about the structure
 
 ```
-my-app/
-  README.md
-  node_modules/
-  package.json
+root/
+  functions/ (contains the code for firebase-functions)
+  node/ (model evaluation and verification, as well as the used dataset)
   public/
     index.html
     favicon.ico
   src/
-    App.css
+    api/
+      NeuralNet.js (the NN implementation, extending brain.js's functionality)
+      Twitch.js (additional layer on top of tmi.js to connect to Twitch)
+    components/ (contains all the React components used in the Web App)
+    redux/ (contains all actions and reducers used to manage state)
     App.js
-    App.test.js
-    index.css
     index.js
-    logo.svg
 ```
 
 ## Something Missing?

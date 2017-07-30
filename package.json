@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "animate.css": "^3.5.2",
-    "brain": "^0.7.0",
     "brain.js": "^1.0.0-rc.3",
+    "chart.js": "^2.6.0",
     "firebase": "^4.1.2",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
