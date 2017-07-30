@@ -10,8 +10,6 @@ import ListItem from 'material-ui/List/ListItem';
 const Navigation = props => {
   const RightArea = !props.userData
     ? <FlatButton
-        href="https://github.com/callemall/material-ui"
-        target="_blank"
         label="Login to Chat"
         secondary={true}
         icon={<FontIcon className="fa fa-twitch" />}
