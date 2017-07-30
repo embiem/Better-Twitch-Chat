@@ -1,0 +1,45 @@
+30th of July 2017, 2:30pm
+
+netDefaultTestResult:  {        precision: 0.9833333333333333, recall: 0.3089005235602094,  f1: 0.47011952191235057 }
+netDefaultLrLowTestResult:  {   precision: 0.9813664596273292, recall: 0.8272251308900523,  f1: 0.8977272727272727 }  <-- WINNER
+netDefaultLrHighTestResult:  {  precision: 0.9841269841269841, recall: 0.32460732984293195, f1: 0.4881889763779527 }
+netDeepTestResult:  {           precision: 0.9857142857142858, recall: 0.3612565445026178,  f1: 0.5287356321839081 }
+netFlatTestResult:  {           precision: 0.9867549668874173, recall: 0.7801047120418848,  f1: 0.8713450292397662 }  <-- 2nd Place
+
+
+30th of July 2017, 2:40pm
+
+netDefaultTestResult:  {        precision: 0.9759036144578314,  recall: 0.42408376963350786,  f1: 0.5912408759124088 }
+netDefaultLrLowTestResult:  {   precision: 0.9664429530201343,  recall: 0.7539267015706806,   f1: 0.8470588235294119 }
+netDefaultLrHighTestResult:  {  precision: 0.9655172413793104,  recall: 0.4397905759162304,   f1: 0.6043165467625901 }
+netDeepTestResult:  {           precision: 0.9661016949152542,  recall: 0.29842931937172773,  f1: 0.456 }
+netFlatTestResult:  {           precision: 0.9657534246575342,  recall: 0.7382198952879581,   f1: 0.8367952522255192 }
+netFlatLrLowTestResult:  {      precision: 0.96045197740113,    recall: 0.8900523560209425,   f1: 0.9239130434782609 }  <-- WINNER
+netFlatWideTestResult:  {       precision: 0.967741935483871,   recall: 0.4712041884816754,   f1: 0.6338028169014085 }
+netFlatWideLrLowTestResult:  {  precision: 0.963855421686747,   recall: 0.837696335078534,    f1: 0.896358543417367 }   <-- 2nd Place
+
+
+
+30th of July 2017, 2:45pm
+
+netDefaultTestResult:  {        precision: 0.9454545454545454,  recall: 0.27225130890052357,  f1: 0.42276422764227645 }
+netDefaultLrLowTestResult:  {   precision: 0.9733333333333334,  recall: 0.7643979057591623,   f1: 0.8563049853372435 }
+netDefaultLrHighTestResult:  {  precision: 1,                   recall: 0.1099476439790576,   f1: 0.19811320754716982 }
+netDeepTestResult:  {           precision: 0.98,                recall: 0.25654450261780104,  f1: 0.4066390041493776 }
+netFlatTestResult:  {           precision: 0.9655172413793104,  recall: 0.5863874345549738,   f1: 0.7296416938110749 }
+netFlatLrLowTestResult:  {      precision: 0.9705882352941176,  recall: 0.8638743455497382,   f1: 0.9141274238227146 }  <-- WINNER
+netFlatWideTestResult:  {       precision: 0.9558823529411765,  recall: 0.3403141361256545,   f1: 0.501930501930502 }
+netFlatWideLrLowTestResult:  {  precision: 0.9731543624161074,  recall: 0.7591623036649214,   f1: 0.8529411764705881 }
+
+
+
+30th of July 2017, 2:50pm
+
+netDefaultTestResult:  {        precision: 0.9863013698630136,  recall: 0.3769633507853403,   f1: 0.5454545454545454 }
+netDefaultLrLowTestResult:  {   precision: 0.98,                recall: 0.7696335078534031,   f1: 0.8621700879765396 }
+netDefaultLrHighTestResult:  {  precision: 0.9814814814814815,  recall: 0.2774869109947644,   f1: 0.43265306122448977 }
+netDeepTestResult:  {           precision: 0.9852941176470589,  recall: 0.3507853403141361,   f1: 0.5173745173745173 }
+netFlatTestResult:  {           precision: 0.9776119402985075,  recall: 0.6858638743455497,   f1: 0.8061538461538463 }
+netFlatLrLowTestResult:  {      precision: 0.9704142011834319,  recall: 0.8586387434554974,   f1: 0.9111111111111112 } <-- WINNER
+netFlatWideTestResult:  {       precision: 0.9888888888888889,  recall: 0.46596858638743455,  f1: 0.6334519572953736 }
+netFlatWideLrLowTestResult:  {  precision: 0.9806451612903225,  recall: 0.7958115183246073,   f1: 0.8786127167630058 }
