@@ -1,10 +1,11 @@
 const mimir = require('mimir');
-const brain = require('brain.js/browser');
+const brain = require('brain.js');
 
 class NeuralNet {
   constructor() {
     this.net = new window.brain.NeuralNetwork({
-      hiddenLayers: [3, 8, 4]
+      hiddenLayers: [2],
+      learningRate: 0.05
     });
     this.dict = null;
 
