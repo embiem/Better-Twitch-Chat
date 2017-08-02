@@ -8,6 +8,7 @@ import Menu from './components/menu/Menu';
 import Navigation from './components/menu/Navigation';
 import Chat from './components/chat/Chat';
 import Train from './components/train/Train';
+import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
 
 import { uiActions } from './redux/actions/';
@@ -39,6 +40,8 @@ class App extends Component {
       return <Redirect to={`/train/`} />;
     } else if (this.state.chosenMenuItem === 3) {
       return <Redirect to={`/chat/${ui.currentChannel}`} />
+    } else if (this.state.chosenMenuItem === 'profile') {
+      return <Redirect to={`/profile`} />
     }
     const entries = [{ id: 1, name: 'Home' }, { id: 2, name: 'Train' }];
     if (ui.currentChannel) {
@@ -68,12 +71,15 @@ class App extends Component {
         onLeftIconClicked={() =>
           this.setState({ drawerOpen: !this.state.drawerOpen })}
         onRightIconClicked={() => {
-          if (!isLoggedIn)
+          if (!isLoggedIn) {
             window.open(
               `${window.location.origin}/popup`,
               'name',
               'height=585,width=400'
             );
+          } else {
+            this.setState({chosenMenuItem: 'profile'});
+          }
         }}
         userData={
           isLoggedIn
@@ -118,6 +124,7 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/chat/:channel" component={Chat} />
           <Route path="/train" component={Train} />
+          <Route path="/profile" component={Profile} />
           {/*If nothing fits, go back to Home */}
           <Route render={() => <Redirect to="/" />} />
         </Switch>

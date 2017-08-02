@@ -1,4 +1,5 @@
 import tmi from 'tmi.js';
+import PubSub from 'pubsub-js';
 
 import { twitchConfig } from '../config';
 
@@ -24,13 +25,10 @@ class Twitch {
     if (identity) this.options.identity = identity;
 
     this.tryToJoinTimeout = null;
-    this.onMsg = () => console.log('msg');
     this.client = tmi.client(this.options);
 
-    this.client.on('message', this.receiveMessage);
+    this.client.on('message', (channel, userstate, message) => PubSub.publish('twitch.message', {channel, userstate, message}));
     this.client.connect();
-
-    this.receiveMessage = this.receiveMessage.bind(this);
   }
 
   join(channelName) {
@@ -84,18 +82,6 @@ class Twitch {
 
     this.client.on('message', this.receiveMessage);
     this.client.connect();
-  }
-
-  receiveMessage(channel, userstate, message) {
-    if (typeof this.onMsg === 'function') {
-      this.onMsg(channel, userstate, message);
-    } else {
-      console.warn('No onMsg callback given!');
-    }
-  }
-
-  setMsgCallback(callback) {
-    this.onMsg = callback;
   }
 }
 

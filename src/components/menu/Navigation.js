@@ -10,12 +10,12 @@ import ListItem from 'material-ui/List/ListItem';
 const Navigation = props => {
   const RightArea = !props.userData
     ? <FlatButton
-        label="Login to Chat"
+        label="Login"
         secondary={true}
         icon={<FontIcon className="fa fa-twitch" />}
       />
     : <ListItem
-        disabled={true}
+        disabled={false}
         leftAvatar={
           <Avatar src={props.userData.image}  />
         }

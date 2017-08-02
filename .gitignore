@@ -26,3 +26,5 @@ src/config.js
 firebase-debug.log
 
 functions/service-account.json
+
+node/out

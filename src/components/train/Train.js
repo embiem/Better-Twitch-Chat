@@ -11,7 +11,7 @@ import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
 
 import MessageDataset from './MessageDataset';
 import Messages from '../chat/Messages';
-import { uiActions, chatActions } from '../../redux/actions';
+import { uiActions, chatActions, userActions } from '../../redux/actions';
 import NeuralNet from '../../api/NeuralNet';
 
 class Train extends Component {
@@ -41,6 +41,11 @@ class Train extends Component {
   onRetrainModelClick() {
     const { dispatch, user } = this.props;
 
+    if (!_.has(user, 'firebaseUser.uid')) {
+      dispatch(uiActions.showSnackbar('Please log-in to train a model!'));
+      return;
+    }
+
     firebase
       .database()
       .ref(`messages/${user.firebaseUser.uid}/`)
@@ -53,6 +58,8 @@ class Train extends Component {
   render() {
     const { ui, user, votedMessages, dispatch } = this.props;
     const votedMessagesKeys = Object.keys(votedMessages);
+    const isLoggedIn =
+      user.firebaseUser && !user.firebaseUser.isAnonymous && user.twitchUser;
 
     return (
       <div className="container-center">
@@ -68,12 +75,24 @@ class Train extends Component {
                 </span>}
           </CardText>
           <CardActions>
-            <RaisedButton
-              label="Retrain model (takes 5-20 seconds)"
-              fullWidth={true}
-              secondary={true}
-              onTouchTap={this.onRetrainModelClick}
-            />
+              <Checkbox
+                label="Training Mode"
+                checked={user.training}
+                onCheck={() => {
+                  if (isLoggedIn) {
+                    dispatch(userActions.setTraining(!user.training));
+                    this.forceUpdate();
+                  } else {
+                    dispatch(uiActions.showSnackbar('You need to be logged-in to train a NN!'));
+                  }
+                }}
+              />
+              <br/>
+              <RaisedButton
+                label="Retrain model (takes 5-20 seconds)"
+                secondary={true}
+                onTouchTap={this.onRetrainModelClick}
+              />
           </CardActions>
         </Card>
 
@@ -106,6 +125,7 @@ class Train extends Component {
                   : <Messages
                       hideVoted
                       messages={ui.hiddenMessages}
+                      showVote={user.training}
                       onLikeMsg={(msg, idx) => {
                         // TODO add to votedMessages accordingly
                         dispatch(uiActions.votedOnHiddenMessage(idx));

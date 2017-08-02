@@ -52,7 +52,7 @@ export const handleMessageReceived = (channel, user, message) => (
   const prediction = NeuralNet.isTrained() ? NeuralNet.predict(message) : 1;
   if (prediction === 1) {
     dispatch(uiActions.addMessage({ user, text: message, channel }));
-  } else {
+  } else if (getState().user.training) {
     dispatch(uiActions.addHiddenMessage({ user, text: message, channel }));
   }
 };

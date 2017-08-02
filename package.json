@@ -11,6 +11,7 @@
     "lodash": "^4.17.4",
     "material-ui": "^0.18.3",
     "mimir": "^0.0.1",
+    "pubsub-js": "^1.5.7",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",

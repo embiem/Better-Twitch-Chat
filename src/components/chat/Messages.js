@@ -9,6 +9,7 @@ const Messages = props => {
           props.hideVoted && msg.voted
             ? ''
             : <Message
+                showVote={props.showVote}
                 key={msg.user['tmi-sent-ts'] + msg.user['user-id']}
                 message={msg.text}
                 user={msg.user}

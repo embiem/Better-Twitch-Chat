@@ -18,20 +18,23 @@ class Home extends Component {
           <Card className="container">
             <CardTitle title="Welcome!" subtitle="About this WebApp" />
             <CardText>
-              This WebApp uses Machine Learning to filter messages in Twitch-Chat.
-              You can vote messages up/down & train your{' '}
-              <a href="https://en.wikipedia.org/wiki/Artificial_neural_network">
-                ANN
-              </a>{' '}
-              model.
+              <b>Just join a Twitch-Channel with the form below & enjoy!</b>
             </CardText>
             <CardText>
-              Start by joining your favorite Twitch channel & voting on some
-              messages. Then go to the <Link to="/train">Train</Link> page and
-              train your model.
+              This WebApp uses Machine Learning to filter messages in Twitch-Chat.
+              We have a default global model, but you can train your own{' '}
+              <a href="https://en.wikipedia.org/wiki/Artificial_neural_network" target="_blank">
+                ANN
+              </a>{' '}
+              model if you login via Twitch.
+            </CardText>
+            <CardText>
+              After logging in, go to the <Link to="/train">Train</Link> page and activate
+              training mode. Then join your favorite Twitch channel & vote on some
+              messages, go back to the Train page and train your model!
             </CardText>
           </Card>
-          <ConnectForm  
+          <ConnectForm
             onChannelNameChanged={(event, newVal) =>
               this.setState({ ...this.state, channelToJoin: newVal })}
             onConnectClicked={() =>

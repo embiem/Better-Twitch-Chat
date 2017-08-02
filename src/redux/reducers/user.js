@@ -1,7 +1,8 @@
 const initialState = {
   firebaseUser: null,
   twitchUser: null,
-  twitchToken: ''
+  twitchToken: '',
+  training: false
 };
 
 export default function userReducer(state = initialState, action) {
@@ -22,6 +23,12 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         twitchToken: action.accessToken
+      };
+
+    case 'SET_TRAINING':
+      return {
+        ...state,
+        training: action.active
       };
 
     default:

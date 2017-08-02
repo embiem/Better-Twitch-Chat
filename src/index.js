@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import firebase from 'firebase';
+import PubSub from 'pubsub-js';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -25,11 +26,36 @@ injectTapEventPlugin();
 const store = require('./redux/configureStore').configure();
 
 // Twitch callback
-Twitch.setMsgCallback(function(channel, userstate, message) {
+PubSub.subscribe('twitch.message', (msg, data) =>
   store.dispatch(
-    chatActions.handleMessageReceived(channel, userstate, message)
-  );
-});
+    chatActions.handleMessageReceived(data.channel, data.userstate, data.message)
+  )
+);
+
+// Util function to load the global neural net, if no private one exists
+const loadGlobalNet = () => {
+  firebase
+    .database()
+    .ref(`netGlobal/`)
+    .once('value')
+    .then(snapshot => {
+      const val = snapshot.val();
+      if (val) {
+        NeuralNet.loadFromJSON({
+          netJSON: val.netJSON,
+          dictJSON: val.dictJSON
+        });
+        console.log('Loaded NN with trainResult: ', val.trainResult);
+        store.dispatch(
+          uiActions.showSnackbar(`Global Neural Net loaded.`)
+        );
+      } else {
+        store.dispatch(
+          uiActions.showSnackbar(`Could not retrieve global NN!`)
+        );
+      }
+    });
+};
 
 // Init firebase
 firebase.initializeApp(config);
@@ -60,26 +86,34 @@ firebase.auth().onAuthStateChanged(user => {
       .then(snapshot => {
         const val = snapshot.val();
         if (val) {
-          NeuralNet.loadFromJSON({ netJSON: val.netJSON, dictJSON: val.dictJSON });
+          NeuralNet.loadFromJSON({
+            netJSON: val.netJSON,
+            dictJSON: val.dictJSON
+          });
           console.log('Loaded NN with trainResult: ', val.trainResult);
-          store.dispatch(uiActions.showSnackbar(`Neural Net successfully loaded!`));
+          store.dispatch(
+            uiActions.showSnackbar(`YOUR Neural Net successfully loaded!`)
+          );
         } else {
-          store.dispatch(uiActions.showSnackbar(`No NN loaded. Vote on messages and train your model!`));
+          loadGlobalNet();
         }
       });
 
-      firebase
-        .database()
-        .ref(`messages/${user.uid}/`)
-        .once('value')
-        .then(snapshot =>
-          store.dispatch(uiActions.setVotedMessages(snapshot.val()))
-        );
+    firebase
+      .database()
+      .ref(`messages/${user.uid}/`)
+      .once('value')
+      .then(snapshot =>
+        store.dispatch(uiActions.setVotedMessages(snapshot.val()))
+      );
 
-    store.dispatch(uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`));
+    store.dispatch(
+      uiActions.showSnackbar(`Hey ${user.displayName}, you're logged-in!`)
+    );
+  } else {
+    loadGlobalNet();
   }
 });
-
 
 // Render
 ReactDOM.render(

@@ -146,7 +146,7 @@ class Chat extends Component {
   }
 
   render() {
-    const { ui, dispatch } = this.props;
+    const { ui, user, dispatch } = this.props;
 
     return (
       <div className="container-center">
@@ -180,6 +180,7 @@ class Chat extends Component {
                     user={msg.user}
                     channel={msg.channel}
                     voted={msg.voted}
+                    showVote={user.training}
                     onLikeMsg={msg => {
                       dispatch(uiActions.votedOnMessage(idx));
                       if (this.messagesRef)

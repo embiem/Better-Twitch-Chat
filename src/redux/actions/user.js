@@ -15,10 +15,7 @@ export const setTwitchToken = accessToken => ({
   accessToken
 });
 
-export const startSignOut = () => (dispatch, getState) => {
-  firebase
-    .auth()
-    .signOut()
-    .then(result => console.log('sign-out result:', result))
-    .catch(err => console.error('sign-out error:', err));
-};
+export const setTraining = active => ({
+  type: 'SET_TRAINING',
+  active
+});
