@@ -1,3 +1,4 @@
+
 A hobby project, which tries to implement a more comfortable & feature-rich chat app for Twitch.
 PoC developed during the Capstone project of Udacity's Machine Learning Nanodegree.
 
